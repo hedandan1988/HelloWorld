@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HelloWorld", "src\HelloWorld\HelloWorld.xproj", "{6C7E6571-4C63-4B21-B8C6-E643DDD00546}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common.library", "common.library", "{C74E5577-7861-4C71-8653-1B4CD455E40E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "basic.library", "basic.library\basic.library.xproj", "{3C737DE8-CABE-4147-9634-F12CB5E76E50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +26,16 @@ Global
 		{6C7E6571-4C63-4B21-B8C6-E643DDD00546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C7E6571-4C63-4B21-B8C6-E643DDD00546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C7E6571-4C63-4B21-B8C6-E643DDD00546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C737DE8-CABE-4147-9634-F12CB5E76E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C737DE8-CABE-4147-9634-F12CB5E76E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C737DE8-CABE-4147-9634-F12CB5E76E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C737DE8-CABE-4147-9634-F12CB5E76E50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6C7E6571-4C63-4B21-B8C6-E643DDD00546} = {9DB4416E-B01D-48D6-8667-4B487CF5903D}
+		{3C737DE8-CABE-4147-9634-F12CB5E76E50} = {C74E5577-7861-4C71-8653-1B4CD455E40E}
 	EndGlobalSection
 EndGlobal

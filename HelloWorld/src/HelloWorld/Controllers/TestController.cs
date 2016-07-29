@@ -7,6 +7,7 @@ using Basic.Library;
 using System.Data.SqlClient;
 using Dapper;
 using Model.Library;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace HelloWorld.Controllers
 {
@@ -20,12 +21,20 @@ namespace HelloWorld.Controllers
 
         public Admin AdminInfo { get; private set; }
 
-        [Verify]
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            base.OnActionExecuted(context);
+            //context.Result = new JsonResult(context.RouteData);
+        }
+
+        //[Verify]
         // GET: /<controller>/
         public IActionResult Index(string input)
         {
-            string md5 = EncryptUtils.MD5Encrypt(input);
-            return Json(md5);
+            //Basic.Library.EncryptUtils.MD5Encrypt(input)
+            Response.Cookies.Append("adminname", "admin");
+            Response.Cookies.Append("adminpwd", "4297f44b13955235245b2497399d7a93");
+            return Json(Basic.Library.EncryptUtils.MD5Encrypt(input));
         }
 
         public IActionResult Admin() {

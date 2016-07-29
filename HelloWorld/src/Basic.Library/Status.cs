@@ -17,5 +17,15 @@ namespace Basic.Library
             启用 = 1,
             禁用 = 0
         }
+        public enum SysRoleVerifyEnum
+        {
+            启用 = 1,
+            禁用 = 0
+        }
+        public enum SysAppVerifyEnum
+        {
+            启用 = 1,
+            禁用 = 0
+        }
     }
 }

@@ -70,11 +70,17 @@ namespace HelloWorld.Controllers
                     //判断权限
                     string controller = context.RouteData.Values["controller"].ToString().ToLower();
                     string action = context.RouteData.Values["action"].ToString().ToLower();
-                    SysApp app = SysAppList.FirstOrDefault(o => o.AppUrl.ToLower().Equals(controller + "/" + action));
+                    string appActiveUrl = controller + "/" + action;
+                    SysApp app = SysAppList.FirstOrDefault(o => o.AppActiveUrl.ToLower().Equals(appActiveUrl));
                     if (app == null)
                     {
                         context.Result = GetAdminLoginResult();
                     }
+                    app.IsActive = true;
+                    //分组
+                    var root = SysAppList.Where(o => o.Level == 0).ToList();
+                    setSysAppList(SysAppList, 0, root, appActiveUrl);
+                    SysAppList = root;
                     ViewBag.AdminDataModel = new AdminDataModel
                     {
                         AdminInfo = AdminInfo,
@@ -88,6 +94,28 @@ namespace HelloWorld.Controllers
                 context.Result = GetAdminLoginResult();
             }
 
+        }
+
+        private void setSysAppList(List<SysApp> sysAppList, int level, List<SysApp> root, string appActiveUrl)
+        {
+            if (root != null && root.Count > 0)
+            {
+                level++;
+                foreach (var item in root)
+                {
+                    item.IsActive = item.AppActiveUrl.ToLower().Equals(appActiveUrl);
+                    item.Children = new List<SysApp>();
+                    var second = SysAppList.Where(o => o.ParentIds.Contains("," + item.Id + ",") && o.Level == level).ToList();
+                    if (second != null && second.Count > 0)
+                    {
+                        var t = second.FirstOrDefault(p => p.AppActiveUrl.ToLower().Equals(appActiveUrl));
+                        if (t != null)
+                            item.IsActive = t.IsActive = true;
+                    }
+                    item.Children.AddRange(second);
+                    setSysAppList(sysAppList, level, second, appActiveUrl);
+                }
+            }
         }
     }
 }

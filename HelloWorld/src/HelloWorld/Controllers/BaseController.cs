@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using Dapper;
 using Basic.Library;
 using Microsoft.AspNetCore.Mvc.Routing;
+using HelloWorld.FrontModel;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,8 +38,13 @@ namespace HelloWorld.Controllers
         /// 所有可用权限列表
         /// </summary>
         public List<SysApp> SysAppList { get; set; }
+
         /// <summary>
-        /// 链接字符串
+        /// 查询信息
+        /// </summary>
+        public SearchModel SearchInfo { get; set; }
+        /// <summary>
+        /// 连接字符串
         /// </summary>
         //public const string CONNECTIONSTRING = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HelloWorld;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public const string CONNECTIONSTRING = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = HelloWorld; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -57,7 +63,6 @@ namespace HelloWorld.Controllers
                     if (AdminInfo == null || AdminInfo.Id == 0 || AdminInfo.Verify == (int)Status.AdminVerifyEnum.禁用)
                     {
                         context.Result = GetAdminLoginResult();
-                        context.Canceled = true;
                     }
                     //获取用户角色信息
                     SysRoleInfo = conn.Query<SysRole>("select top 1 * from SysRole where id=(select roleid from adminrole where adminid=@id and verify=@verify)", new { id = AdminInfo.Id, verify = (int)Status.SysRoleVerifyEnum.启用 }).FirstOrDefault();
@@ -66,7 +71,7 @@ namespace HelloWorld.Controllers
                         context.Result = GetAdminLoginResult();
                     }
                     //获取权限信息
-                    SysAppList = conn.Query<SysApp>("select * from SysApp where id in(select appid from sysroleapp where verify=@verify and roleid=@id)", new { id = SysRoleInfo.Id, verify = (int)Status.SysAppVerifyEnum.启用 }).ToList();
+                    SysAppList = conn.Query<SysApp>("select * from SysApp where id in(select appid from sysroleapp where verify=@verify and roleid=@id) order by grade desc", new { id = SysRoleInfo.Id, verify = (int)Status.SysAppVerifyEnum.启用 }).ToList();
                     //判断权限
                     string controller = context.RouteData.Values["controller"].ToString().ToLower();
                     string action = context.RouteData.Values["action"].ToString().ToLower();
@@ -87,6 +92,9 @@ namespace HelloWorld.Controllers
                         SysAppList = SysAppList,
                         SysRoleInfo = SysRoleInfo
                     };
+                    //查询模型初始化
+                    SearchInfo = new SearchModel();
+                    
                 }
             }
             else

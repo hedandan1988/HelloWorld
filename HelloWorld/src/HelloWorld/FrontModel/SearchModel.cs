@@ -57,14 +57,14 @@ namespace HelloWorld.FrontModel
                 if (Parameters.ContainsKey("pagesize"))
                 {
                     PageSize = Parameters["pagesize"].ToInt32(10);
-                    PageSize = PageSize > 0 ? PageSize : 10;
                 }
                 if (Parameters.ContainsKey("pageindex"))
                 {
                     PageIndex = Parameters["pageindex"].ToInt32(1);
-                    PageIndex = PageIndex > 0 ? PageIndex : 1;
                 }
             }
+            PageSize = PageSize > 0 ? PageSize : 10;
+            PageIndex = PageIndex > 0 ? PageIndex : 1;
         }
     }
 }

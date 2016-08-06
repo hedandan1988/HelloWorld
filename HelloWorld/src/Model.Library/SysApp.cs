@@ -23,6 +23,17 @@ namespace Model.Library
         public int Grade { get; set; }
         public List<SysApp> Children { get; set; }
         public bool IsActive { get; set; }
+        /// <summary>
+        /// 类型 0表示页面,1表示接口
+        /// </summary>
+        public int SortId { get; set; }
     }
-
+    /// <summary>
+    /// 模块类型枚举
+    /// </summary>
+    public enum SysAppSortIdEnum
+    {
+        页面=0,
+        接口=1
+    }
 }

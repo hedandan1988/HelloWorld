@@ -64,14 +64,14 @@ var TableAdvanced = function () {
             else {
                 /* Open this row */
                 $(this).addClass("row-details-open").removeClass("row-details-close");
-                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details'); 
             }
         });
     }
 
     var initTable2 = function () {
         var oTable = $('#sample_2').dataTable({
-            "ajax": "/user/list",
+            "ajax": "/user/userlist",
             "aoColumnDefs": [
                 { "aTargets": [0] }
             ],

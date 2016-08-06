@@ -135,7 +135,7 @@ namespace HelloWorld.Controllers
             }
             app.IsActive = true;
             //分组
-            var root = SysAppList.Where(o => o.Level == 0).ToList();
+            var root = SysAppList.Where(o => o.Level == 0 && o.SortId==(int)Model.Library.SysAppSortIdEnum.页面).ToList();
             setSysAppList(SysAppList, 0, root, appActiveUrl);
             SysAppList = root;
             ViewBag.AdminDataModel = new AdminDataModel
@@ -170,7 +170,7 @@ namespace HelloWorld.Controllers
                 {
                     item.IsActive = item.AppActiveUrl.ToLower().Equals(appActiveUrl);
                     item.Children = new List<SysApp>();
-                    var second = SysAppList.Where(o => o.ParentIds.Contains("," + item.Id + ",") && o.Level == level).ToList();
+                    var second = SysAppList.Where(o => o.ParentIds.Contains("," + item.Id + ",") && o.Level == level && o.SortId == (int)Model.Library.SysAppSortIdEnum.页面).ToList();
                     if (second != null && second.Count > 0)
                     {
                         var t = second.FirstOrDefault(p => p.AppActiveUrl.ToLower().Equals(appActiveUrl));

@@ -45,25 +45,11 @@ namespace HelloWorld.Controllers
         /// 查询信息
         /// </summary>
         public SearchModel SearchInfo { get; set; }
-
-        /// <summary>
-        ///连接对象
-        /// </summary>
-        public SqlConnection Connection {
-            get { return new SqlConnection(_connectionstring); }
-        }
-
         #endregion
-
-        /// <summary>
-        /// 连接字符串
-        /// </summary>
-        //public const string CONNECTIONSTRING = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HelloWorld;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private const string _connectionstring = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = HelloWorld; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            
+
             string adminname = "";
             string adminpwd = "";
             var cookies = context.HttpContext.Request.Cookies;
@@ -79,7 +65,7 @@ namespace HelloWorld.Controllers
                 context.Result = GetAdminLoginResult();
             }
             base.OnActionExecuting(context);
-            
+
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -104,29 +90,28 @@ namespace HelloWorld.Controllers
         /// <summary>
         /// 初始化用户权限相关信息
         /// </summary>
-        private void InitAdminRelevant(string adminname,string adminpwd, ActionExecutingContext context)
+        private void InitAdminRelevant(string adminname, string adminpwd, ActionExecutingContext context)
         {
-            using (var conn = new SqlConnection(_connectionstring))
+
+            AdminInfo = Tools.MSSQL.QueryFirstOrDefault<Admin>("select top 1 * from admin where UserName=@UserName and UserPwd=@UserPwd", new { UserName = adminname, UserPwd = adminpwd });
+            if (AdminInfo == null || AdminInfo.Id == 0 || AdminInfo.Verify == (int)Status.AdminVerifyEnum.禁用)
             {
-                AdminInfo = conn.Query<Admin>("select top 1 * from admin where UserName=@UserName and UserPwd=@UserPwd", new { UserName = adminname, UserPwd = adminpwd }).FirstOrDefault();
-                if (AdminInfo == null || AdminInfo.Id == 0 || AdminInfo.Verify == (int)Status.AdminVerifyEnum.禁用)
-                {
-                    context.Result = GetAdminLoginResult();
-                    return;
-                }
-                //获取用户角色信息
-                SysRoleInfo = conn.Query<SysRole>("select top 1 * from SysRole where id=(select roleid from adminrole where adminid=@id and verify=@verify)", new { id = AdminInfo.Id, verify = (int)Status.SysRoleVerifyEnum.启用 }).FirstOrDefault();
-                if (SysRoleInfo == null || SysRoleInfo.Id == 0)
-                {
-                    context.Result = GetAdminLoginResult();
-                    return;
-                }
-                SysAppList = conn.Query<SysApp>("select * from SysApp where id in(select appid from sysroleapp where verify=@verify and roleid=@id) order by grade desc", new { id = SysRoleInfo.Id, verify = (int)Status.SysAppVerifyEnum.启用 }).ToList();
+                context.Result = GetAdminLoginResult();
+                return;
             }
+            //获取用户角色信息
+            SysRoleInfo = Tools.MSSQL.QueryFirstOrDefault<SysRole>("select top 1 * from SysRole where id=(select roleid from adminrole where adminid=@id and verify=@verify)", new { id = AdminInfo.Id, verify = (int)Status.SysRoleVerifyEnum.启用 });
+            if (SysRoleInfo == null || SysRoleInfo.Id == 0)
+            {
+                context.Result = GetAdminLoginResult();
+                return;
+            }
+            SysAppList = Tools.MSSQL.Query<SysApp>("select * from SysApp where id in(select appid from sysroleapp where verify=@verify and roleid=@id) order by grade desc", new { id = SysRoleInfo.Id, verify = (int)Status.SysAppVerifyEnum.启用 });
+
             //判断权限
             string controller = context.RouteData.Values["controller"].ToString().ToLower();
             string action = context.RouteData.Values["action"].ToString().ToLower();
-            string appActiveUrl = "/"+controller + "/" + action;
+            string appActiveUrl = "/" + controller + "/" + action;
             SysApp app = SysAppList.FirstOrDefault(o => o.AppActiveUrl.ToLower().Equals(appActiveUrl));
             if (app == null)
             {
@@ -135,7 +120,7 @@ namespace HelloWorld.Controllers
             }
             app.IsActive = true;
             //分组
-            var root = SysAppList.Where(o => o.Level == 0 && o.SortId==(int)Model.Library.SysAppSortIdEnum.页面).ToList();
+            var root = SysAppList.Where(o => o.Level == 0 && o.SortId == (int)Model.Library.SysAppSortIdEnum.页面).ToList();
             setSysAppList(SysAppList, 0, root, appActiveUrl);
             SysAppList = root;
             ViewBag.AdminDataModel = new AdminDataModel

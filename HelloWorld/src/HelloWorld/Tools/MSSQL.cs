@@ -82,7 +82,7 @@ namespace HelloWorld.Tools
             var finfos = type.GetProperties();
             JQDataTableModel jqmodel = new JQDataTableModel();
             jqmodel.data = new List<List<object>>();
-            jqmodel.draw = data.Page;
+            jqmodel.draw = model.Draw;
             jqmodel.recordsTotal = data.Counts;
             jqmodel.recordsFiltered = data.Counts;
             foreach (var item in data.DataList)

@@ -89,6 +89,10 @@ namespace HelloWorld.FrontModel
             }
         }
         /// <summary>
+        /// datatable分页参数
+        /// </summary>
+        public int Draw { get; set; }
+        /// <summary>
         /// 要显示那一页的数据,默认1
         /// </summary>
         public int Page

@@ -72,6 +72,8 @@ var TableAdvanced = function () {
     var initTable2 = function () {
         var oTable = $('#sample_2').dataTable({
             "ajax": "/user/userlist",
+            "processing": true,
+            "serverSide": true,
             "aoColumnDefs": [
                 { "aTargets": [0] }
             ],

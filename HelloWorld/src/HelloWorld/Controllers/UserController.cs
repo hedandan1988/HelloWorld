@@ -41,7 +41,7 @@ namespace HelloWorld.Controllers
             {
                 condition += string.Format(" and username like '%{0}%'", kw);
             }
-            return Json(Tools.MSSQL.GetJQDatatableModel<User>(new PageDataStoredModel { TblName = "[user]", StrCondition = condition }));
+            return Json(Tools.MSSQL.GetJQDatatableModel<User>(new PageDataStoredModel { TblName = "[user]", StrCondition = condition,Page=SearchInfo.PageIndex, PageSize=SearchInfo.PageSize,Draw=SearchInfo.Draw }));
         }
 
         

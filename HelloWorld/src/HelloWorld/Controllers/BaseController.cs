@@ -24,7 +24,7 @@ namespace HelloWorld.Controllers
         /// <returns></returns>
         protected RedirectResult GetAdminLoginResult()
         {
-            return new RedirectResult("/admin/login");
+            return new RedirectResult("/adminlogin");
         }
 
         #region 默认公用对象

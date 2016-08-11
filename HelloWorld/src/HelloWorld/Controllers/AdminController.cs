@@ -15,5 +15,13 @@ namespace HelloWorld.Controllers
         {
             return View();
         }
+
+
+    }
+    public class AdminLoginController:Controller{
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

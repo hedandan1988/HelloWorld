@@ -10,7 +10,8 @@ namespace Basic.Library
         public enum CommonStatusEnum
         {
             验证签名失败=501,
-            成功=200
+            成功=200,
+            数据验证失败 = 502
         }
         public enum AdminVerifyEnum
         {

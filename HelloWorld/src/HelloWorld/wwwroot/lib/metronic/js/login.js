@@ -1,4 +1,4 @@
-var Login = function () {
+﻿var Login = function () {
     
     return {
         //main function to initiate the module
@@ -22,10 +22,10 @@ var Login = function () {
 
 	            messages: {
 	                username: {
-	                    required: "Username is required."
+	                    required: "请输入用户名"
 	                },
 	                password: {
-	                    required: "Password is required."
+	                    required: "请输入密码"
 	                }
 	            },
 

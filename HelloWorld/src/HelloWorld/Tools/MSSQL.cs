@@ -126,5 +126,19 @@ namespace HelloWorld.Tools
                 throw ex;
             }
         }
+
+        public static int Execute(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionstring))
+                {
+                    return conn.Execute(sql, param, transaction, commandTimeout, commandType);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

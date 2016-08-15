@@ -23,7 +23,8 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
     "Basic.Library": "1.0.0-*",
     "Model.Library": "1.0.0-*",
-    "Dapper": "1.50.2"
+    "Dapper": "1.50.2",
+    "Dic.Library": "1.0.0-*"
   },
 
   "tools": {
